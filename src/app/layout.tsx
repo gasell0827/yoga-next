@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 const suit = localFont({
-  src: "../assets/fonts/SUIT-Variable.woff2",
+  src: "../../public/fonts/SUIT-Variable.woff2",
   variable: "--font-suit",
 });
 
