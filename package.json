@@ -26,7 +26,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "^9.19.0",
     "eslint-config-next": "15.1.6",
     "eslint-plugin-prettier": "^5.2.3",
     "husky": "^9.1.7",
@@ -38,10 +38,12 @@
     "typescript": "^5"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "next lint --fix",
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
       "prettier --write"
     ],
-    "*.{css,md,json,yaml}": "prettier --write"
+    "src/**/*.{json,css,md,yaml}": [
+      "prettier --write"
+    ]
   }
 }
