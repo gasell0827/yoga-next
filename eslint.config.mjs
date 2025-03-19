@@ -16,10 +16,15 @@ const eslintConfig = [
   }),
   {
     rules: {
-      "no-unused-vars": "warn", // 기본 JS 규칙 활성화
-      "@typescript-eslint/no-unused-vars": "warn",
-    },
-  },
+      "no-unused-vars": "off", 
+      "@typescript-eslint/no-unused-vars": ["warn", {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_|(Props|State)$|.*Type$",
+        "ignoreRestSiblings": true,
+        "args": "none" // 함수 매개변수는 검사하지 않음
+      }]
+    }
+  }
 ];
 
 export default eslintConfig;
