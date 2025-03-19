@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-import { COLOR_SYSTEM } from "./src/shared/constants/styles/colors";
+import { COLOR_SYSTEM } from "./src/shared/styles/colors";
 
 const config: Config = {
   content: [
