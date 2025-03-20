@@ -1,0 +1,14 @@
+/* 월 헤더를 숨기는 스타일 */
+.hide-month-header .rbc-toolbar-label {
+  display: none;
+}
+
+/* 툴바 버튼들을 숨기는 스타일 */
+.hide-toolbar-buttons .rbc-btn-group {
+  display: none;
+}
+
+/* 툴바 전체를 숨기는 스타일 */
+.hide-toolbar .rbc-toolbar {
+  display: none;
+}
