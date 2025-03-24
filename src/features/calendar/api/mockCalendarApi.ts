@@ -64,6 +64,17 @@ const initializeMockEvents = () => {
         modifiedAt: null,
         location: "요가 스튜디오",
         memo: "주말 집중 수련 프로그램",
+      },
+      {
+        id: "11",
+        title: "다음 달 요가 수련",
+        start: new Date(currentYear, currentMonth, 15, 10, 0),
+        end: new Date(currentYear, currentMonth, 15, 12, 0),
+        category: "수련",
+        createdAt: new Date(),
+        modifiedAt: null,
+        location: "요가 스튜디오",
+        memo: "주말 집중 수련 프로그램",
       }
     );
 
@@ -113,6 +124,28 @@ const initializeMockEvents = () => {
         createdAt: new Date(),
         modifiedAt: null,
         isCompleted: true,
+      },
+      {
+        id: "12",
+        title: "기타기타",
+        start: new Date(currentYear, currentMonth, 15, 10, 0),
+        end: new Date(currentYear, currentMonth, 15, 12, 0),
+        category: "할 일",
+        createdAt: new Date(),
+        modifiedAt: null,
+        location: "요가 스튜디오",
+        memo: "주말 집중 수련 프로그램",
+      },
+      {
+        id: "14",
+        title: "기타기타222",
+        start: new Date(currentYear, currentMonth, 15, 10, 0),
+        end: new Date(currentYear, currentMonth, 15, 12, 0),
+        category: "할 일",
+        createdAt: new Date(),
+        modifiedAt: null,
+        location: "요가 스튜디오",
+        memo: "주말 집중 수련 프로그램",
       }
     );
 
@@ -138,6 +171,17 @@ const initializeMockEvents = () => {
         createdAt: new Date(),
         modifiedAt: null,
         location: "커뮤니티 센터",
+      },
+      {
+        id: "13",
+        title: "ToDo 앱 출시",
+        start: new Date(currentYear, currentMonth, 15, 10, 0),
+        end: new Date(currentYear, currentMonth, 15, 12, 0),
+        category: "기타",
+        createdAt: new Date(),
+        modifiedAt: null,
+        location: "요가 스튜디오222",
+        memo: "주말 집중 수련 프로그램222",
       }
     );
 
