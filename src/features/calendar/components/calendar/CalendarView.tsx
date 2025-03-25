@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Calendar, View, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-// import { EventModal } from "@/features/calendar/components/modal/EventModal";
+import { EventModal } from "@/features/calendar/components/modal/EventModal";
 import { CalendarViewType } from "@/features/calendar/hooks/useCalendar";
 
 import {
@@ -58,9 +58,7 @@ export function CalendarView({
   onView,
 }: CalendarViewProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
-    null
-  );
+  const [selectedModalDay, setSelectedModalDay] = useState<Date | null>(null);
 
   const filteredEvents = events.filter((event) => filters[event.category]);
 
@@ -74,6 +72,11 @@ export function CalendarView({
     };
   };
 
+  const handleDayClick = (date: Date) => {
+    setSelectedModalDay(date);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="h-[calc(100vh-250px)]">
       <Calendar
@@ -84,23 +87,35 @@ export function CalendarView({
         style={{ height: "100%" }}
         eventPropGetter={eventStyle}
         onSelectEvent={(event) => {
-          setSelectedEvent(event);
-          setIsModalOpen(true);
+          handleDayClick(new Date(event.start));
         }}
+        onSelectSlot={({ start }) => {
+          handleDayClick(new Date(start));
+        }}
+        // NOTE: 날짜 클릭 시 모달 표시
+        onDrillDown={(date) => {
+          handleDayClick(date);
+          return true;
+        }}
+        selectable={true}
         date={selectedDate}
         view={view}
         onNavigate={onNavigate}
         onView={onView}
         formats={CALENDAR_FORMATS}
-        className="hide-month-header hide-toolbar-buttons"
+        className="hide-month-header hide-toolbar-buttons calendar-cell-clickable"
       />
-      {/* {selectedEvent && (
+      {selectedModalDay && isModalOpen && (
         <EventModal
-          isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          eventData={selectedEvent}
+          selectedDate={selectedModalDay}
+          events={filteredEvents.filter(
+            (event) =>
+              new Date(event.start).toDateString() ===
+              selectedModalDay.toDateString()
+          )}
         />
-      )} */}
+      )}
     </div>
   );
 }

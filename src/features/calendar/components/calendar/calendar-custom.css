@@ -12,3 +12,32 @@
 .hide-toolbar .rbc-toolbar {
   display: none;
 }
+
+/* 날짜 셀 전체 영역 클릭 가능하게 만들기 */
+.calendar-cell-clickable .rbc-month-view .rbc-date-cell {
+  cursor: pointer;
+}
+
+.calendar-cell-clickable .rbc-month-view .rbc-day-bg {
+  cursor: pointer;
+}
+
+/* 날짜 셀 테두리 클릭 영역 확장 */
+.calendar-cell-clickable .rbc-month-view .rbc-day-bg,
+.calendar-cell-clickable .rbc-month-view .rbc-date-cell {
+  position: relative;
+  z-index: 1;
+}
+
+/* 날짜 셀 내부 여백 조정으로 클릭 영역 확장 */
+.calendar-cell-clickable .rbc-month-view .rbc-date-cell {
+  padding: 0;
+}
+
+.calendar-cell-clickable .rbc-month-view .rbc-date-cell > a {
+  display: block;
+  padding: 5px;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
