@@ -141,13 +141,13 @@ export function CalendarView({
   };
 
   return (
-    <div className="h-[calc(100vh-250px)]">
+    <div className="h-[calc(100vh-250px)] min-h-[500px]">
       <Calendar
         localizer={localizer}
         events={filteredEvents}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: "100%" }}
+        style={{ height: "100%", minHeight: "500px" }}
         eventPropGetter={eventStyle}
         components={components}
         onSelectEvent={(event) => {
@@ -168,6 +168,7 @@ export function CalendarView({
         onView={onView}
         formats={CALENDAR_FORMATS}
         className="hide-month-header hide-toolbar-buttons calendar-cell-clickable"
+        popup={false}
       />
       {selectedModalDay && isModalOpen && (
         <EventModal

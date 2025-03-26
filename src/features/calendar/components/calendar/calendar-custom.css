@@ -42,6 +42,20 @@
   height: 100%;
 }
 
+.rbc-row-segment {
+  padding: 0 1px 1px 1px !important;
+}
+
+.rbc-show-more {
+  font-size: 85%;
+  height: auto;
+  line-height: normal;
+  white-space: nowrap;
+  padding: 0 2px;
+  color: black;
+  z-index: 5;
+}
+
 /* 이벤트 내부 체크박스 스타일 */
 .rbc-event {
   padding: 2px 5px !important;
@@ -54,4 +68,50 @@
 /* 체크박스 클릭 영역 확장 */
 .rbc-event-content .mr-1 {
   padding: 2px;
+}
+
+/* 모바일 환경에서 달력 행 높이 조정 */
+@media (max-width: 768px) {
+  /* 더 구체적인 선택자를 사용하여 특이성 높이기 */
+  .rbc-calendar .rbc-month-view .rbc-month-row {
+    min-height: 80px;
+    height: auto;
+  }
+
+  .rbc-calendar .rbc-month-view .rbc-row-content {
+    min-height: 70px;
+    height: auto;
+  }
+
+  .rbc-calendar .rbc-month-view .rbc-row-segment .rbc-event-content {
+    min-height: 16px;
+  }
+
+  /* iOS 특정 수정사항 */
+  .rbc-calendar .rbc-month-view {
+    height: auto;
+    min-height: 500px;
+  }
+
+  /* 이벤트가 잘리지 않도록 설정 */
+  .rbc-calendar .rbc-event {
+    overflow: visible;
+  }
+
+  /* 각 날짜 셀의 최소 높이 설정 */
+  .rbc-calendar .rbc-month-view .rbc-date-cell {
+    min-height: 24px;
+  }
+}
+
+/* iOS Safari 특정 수정사항 */
+@supports (-webkit-touch-callout: none) {
+  .rbc-calendar .rbc-month-view .rbc-month-row {
+    min-height: 90px;
+  }
+
+  .rbc-calendar {
+    height: auto;
+    min-height: 500px;
+  }
 }
