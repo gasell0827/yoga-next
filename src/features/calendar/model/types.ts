@@ -41,14 +41,14 @@ export interface CalendarEvent {
   createdAt: Date;
   modifiedAt: Date | null;
 
-  // "할 일" 한정 type
+  // NOTE: "할 일" 한정 type
   isCompleted?: boolean;
 
-  // 추후 상세 수정
+  // NOTE: 추후 상세 수정 필요
   location?: string;
-  repeatSetting?: string;
-  alarmSetting?: string;
   memo?: string;
+  isRecurring?: boolean;
+  hasReminder?: boolean;
 }
 
 export type FilterState = Record<CalendarCategory, boolean>;
