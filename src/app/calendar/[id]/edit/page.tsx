@@ -1,10 +1,11 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { Suspense } from "react";
 
 import { CreateEditForm } from "@/features/calendar/components/form/CreateEditForm";
 
-export default function EditEventPage() {
+function EditEventContent() {
   const { id } = useParams();
 
   return (
@@ -12,5 +13,13 @@ export default function EditEventPage() {
       <h1 className="mb-4 text-2xl font-bold">일정 수정</h1>
       <CreateEditForm eventId={id as string} />
     </div>
+  );
+}
+
+export default function EditEventPage() {
+  return (
+    <Suspense fallback={<div className="p-4">로딩 중...</div>}>
+      <EditEventContent />
+    </Suspense>
   );
 }

@@ -2,7 +2,7 @@
 
 import { format } from "date-fns";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
@@ -16,15 +16,14 @@ import { CalendarCategory, CalendarEvent } from "../../model/types";
 
 interface CreateEditFormProps {
   eventId?: string;
+  initialDate?: Date;
 }
 
-export function CreateEditForm({ eventId }: CreateEditFormProps) {
+export function CreateEditForm({
+  eventId,
+  initialDate = new Date(),
+}: CreateEditFormProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const initialDate = searchParams.get("date")
-    ? new Date(searchParams.get("date") as string)
-    : new Date();
 
   const [formData, setFormData] = useState<Partial<CalendarEvent>>({
     title: "",
