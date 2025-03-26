@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Calendar, View, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
+import { mockUpdateEvent } from "@/features/calendar/api/mockCalendarApi";
 import { EventModal } from "@/features/calendar/components/modal/EventModal";
 import { CalendarViewType } from "@/features/calendar/hooks/useCalendar";
 
@@ -49,6 +50,64 @@ interface CalendarViewProps {
   onView?: (view: View) => void;
 }
 
+function CustomEvent({ event }: { event: CalendarEvent }) {
+  const [isCompleted, setIsCompleted] = useState(event.isCompleted || false);
+
+  const handleToggleComplete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    try {
+      setIsCompleted(!isCompleted);
+      await mockUpdateEvent(event.id, {
+        isCompleted: !isCompleted,
+      });
+    } catch (error) {
+      console.error("이벤트 상태를 변경하는 중 오류가 발생했습니다:", error);
+      setIsCompleted(isCompleted);
+    }
+  };
+
+  // NOTE: 할 일 카테고리인 경우에만 체크박스 표시
+  if (event.category === "할 일") {
+    return (
+      <div className="flex items-center w-full">
+        <div className="mr-1 flex-shrink-0" onClick={handleToggleComplete}>
+          <div
+            className={`w-4 h-4 border rounded flex items-center justify-center ${
+              isCompleted ? "bg-blue-500 border-blue-500" : "border-gray-400"
+            }`}
+          >
+            {isCompleted && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3 w-3 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            )}
+          </div>
+        </div>
+        <div
+          className={`truncate ${isCompleted ? "line-through text-gray-500" : ""}`}
+        >
+          {event.title}
+        </div>
+      </div>
+    );
+  }
+
+  // 일반 이벤트는 기본 스타일로 표시
+  return <div className="truncate">{event.title}</div>;
+}
+
 export function CalendarView({
   events,
   selectedDate,
@@ -77,6 +136,10 @@ export function CalendarView({
     setIsModalOpen(true);
   };
 
+  const components = {
+    event: CustomEvent,
+  };
+
   return (
     <div className="h-[calc(100vh-250px)]">
       <Calendar
@@ -86,6 +149,7 @@ export function CalendarView({
         endAccessor="end"
         style={{ height: "100%" }}
         eventPropGetter={eventStyle}
+        components={components}
         onSelectEvent={(event) => {
           handleDayClick(new Date(event.start));
         }}

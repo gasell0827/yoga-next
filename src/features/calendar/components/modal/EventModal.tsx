@@ -3,7 +3,9 @@
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
+import { mockUpdateEvent } from "@/features/calendar/api/mockCalendarApi";
 import { CalendarEvent } from "@/features/calendar/model/types";
 import { Z_INDEX } from "@/shared/styles/zIndex";
 
@@ -15,6 +17,7 @@ interface EventModalProps {
 
 export function EventModal({ onClose, selectedDate, events }: EventModalProps) {
   const router = useRouter();
+  const [localEvents, setLocalEvents] = useState<CalendarEvent[]>(events);
 
   const handleEditEvent = (eventId: string) => {
     router.push(`/calendar/${eventId}/edit`);
@@ -29,9 +32,29 @@ export function EventModal({ onClose, selectedDate, events }: EventModalProps) {
     }
   };
 
+  const handleToggleComplete = async (event: CalendarEvent) => {
+    try {
+      const updatedEvents = localEvents.map((e) =>
+        e.id === event.id ? { ...e, isCompleted: !e.isCompleted } : e
+      );
+      setLocalEvents(updatedEvents);
+
+      await mockUpdateEvent(event.id, {
+        isCompleted: !event.isCompleted,
+      });
+    } catch (error) {
+      console.error("이벤트 상태를 변경하는 중 오류가 발생했습니다:", error);
+      setLocalEvents(events);
+    }
+  };
+
   if (selectedDate) {
-    const todoEvents = events.filter((event) => event.category === "할 일");
-    const otherEvents = events.filter((event) => event.category !== "할 일");
+    const todoEvents = localEvents.filter(
+      (event) => event.category === "할 일"
+    );
+    const otherEvents = localEvents.filter(
+      (event) => event.category !== "할 일"
+    );
 
     return (
       <div
@@ -51,7 +74,7 @@ export function EventModal({ onClose, selectedDate, events }: EventModalProps) {
             </button>
           </div>
 
-          {events.length === 0 ? (
+          {localEvents.length === 0 ? (
             <p className="text-gray-500 py-4 text-center">
               이 날짜에 예정된 일정이 없습니다.
             </p>
@@ -90,19 +113,59 @@ export function EventModal({ onClose, selectedDate, events }: EventModalProps) {
                     {todoEvents.map((event) => (
                       <div
                         key={event.id}
-                        className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
-                        onClick={() => handleEditEvent(event.id)}
+                        className="p-3 border rounded-lg hover:bg-gray-50 flex items-start"
                       >
-                        <div className="font-semibold">{event.title}</div>
-                        <div className="text-sm text-gray-600">
-                          {format(new Date(event.start), "p", { locale: ko })} -
-                          {format(new Date(event.end), "p", { locale: ko })}
-                        </div>
-                        {event.location && (
-                          <div className="text-sm text-gray-600 mt-1">
-                            장소: {event.location}
+                        <div
+                          className="mr-3 mt-1"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleToggleComplete(event);
+                          }}
+                        >
+                          <div
+                            className={`w-5 h-5 border rounded flex items-center justify-center cursor-pointer ${
+                              event.isCompleted
+                                ? "bg-blue-500 border-blue-500"
+                                : "border-gray-400"
+                            }`}
+                          >
+                            {event.isCompleted && (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4 text-white"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                            )}
                           </div>
-                        )}
+                        </div>
+                        <div
+                          className="flex-1 cursor-pointer"
+                          onClick={() => handleEditEvent(event.id)}
+                        >
+                          <div
+                            className={`font-semibold ${event.isCompleted ? "line-through text-gray-500" : ""}`}
+                          >
+                            {event.title}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {format(new Date(event.start), "p", { locale: ko })}{" "}
+                            -{format(new Date(event.end), "p", { locale: ko })}
+                          </div>
+                          {event.location && (
+                            <div className="text-sm text-gray-600 mt-1">
+                              장소: {event.location}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -129,4 +192,6 @@ export function EventModal({ onClose, selectedDate, events }: EventModalProps) {
       </div>
     );
   }
+
+  return null;
 }
