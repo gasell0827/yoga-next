@@ -1,6 +1,6 @@
 # 🧘 Yoga Project - Next.js
 
-React Native 웹뷰에서 사용할 요가 웹 페이지 프로젝트입니다.
+React Native 웹뷰에서 사용할 요가 웹 페이지 프로젝트입니다.1
 
 ## 📌 목차
 
