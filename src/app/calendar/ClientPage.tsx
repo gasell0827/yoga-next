@@ -1,10 +1,8 @@
 "use client";
 
-import { format } from "date-fns";
 import { useState } from "react";
-import { useQuery } from "react-query";
 
-import { mockFetchMonthlyEvents } from "@/features/calendar/api/mockCalendarApi";
+import { useFetchMonthlyEvent } from "@/features/calendar/api/useMonthlyEventQuery";
 import { CalendarView } from "@/features/calendar/components/calendar/CalendarView";
 import { EventCreateButton } from "@/features/calendar/components/calendar/EventCreateButton";
 import { FilterChips } from "@/features/calendar/components/calendar/FilterChips";
@@ -32,14 +30,9 @@ function CalendarContent({ initialEvents }: ClientPageProps) {
 
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
-  const { data: events = initialEvents } = useQuery(
-    ["events", format(currentDate, "yyyy-MM")],
-    () => mockFetchMonthlyEvents(currentDate),
-    {
-      initialData: initialEvents,
-      retry: 2,
-      useErrorBoundary: true,
-    }
+  const { data: events = initialEvents } = useFetchMonthlyEvent(
+    currentDate,
+    initialEvents
   );
 
   return (
